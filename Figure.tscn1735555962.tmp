@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://coxehtwt5q61s"]
+
+[ext_resource type="Script" uid="uid://dh07b77uwx8j0" path="res://figures/figure.gd" id="1_3sfyk"]
+
+[node name="Figure" type="RigidBody2D"]
+visible = false
+gravity_scale = 0.0
+script = ExtResource("1_3sfyk")

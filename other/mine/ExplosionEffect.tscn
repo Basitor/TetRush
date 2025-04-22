@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://blh6gjrem60bj"]
+
+[ext_resource type="Script" uid="uid://72fhkiqxemii" path="res://other/mine/explosion_effect.gd" id="1_i78np"]
+
+[sub_resource type="Curve" id="Curve_iqarb"]
+_limits = [0.0, 10.0, 0.0, 1.0]
+_data = [Vector2(0, 8.98876), 0.0, 0.0, 0, 0, Vector2(1, 1.57303), -12.9952, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_ip3fm"]
+offsets = PackedFloat32Array(0, 0.486667, 1)
+colors = PackedColorArray(1, 1, 1, 0.807843, 1, 0, 0, 1, 0, 0, 0, 0.243137)
+
+[node name="ExplosionEffect" type="CPUParticles2D"]
+emitting = false
+amount = 50
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+emission_shape = 1
+emission_sphere_radius = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 80.0
+initial_velocity_max = 120.0
+scale_amount_curve = SubResource("Curve_iqarb")
+color_ramp = SubResource("Gradient_ip3fm")
+script = ExtResource("1_i78np")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

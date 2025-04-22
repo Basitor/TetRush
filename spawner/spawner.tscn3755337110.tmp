@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://ckhycasoe3x4j"]
+
+[ext_resource type="Script" uid="uid://dek0ejhneg1da" path="res://spawner/spawner.gd" id="1_ttk4a"]
+[ext_resource type="Shader" uid="uid://dlemcimqma4cy" path="res://shaders/change_color.gdshader" id="2_nhote"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_khvsl"]
+size = Vector2(1280, 200)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nhote"]
+shader = ExtResource("2_nhote")
+shader_parameter/dest_color = Color(1, 0, 0, 0.458824)
+shader_parameter/color_intencity = 1.0
+
+[node name="Spawner" type="Marker2D"]
+script = ExtResource("1_ttk4a")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 180)
+
+[node name="MoveArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MoveArea"]
+position = Vector2(0, 100)
+shape = SubResource("RectangleShape2D_khvsl")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_nhote")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+
+[connection signal="body_entered" from="MoveArea" to="." method="_on_area_2d_body_entered"]

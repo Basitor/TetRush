@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://2fwg6gxohlhi"]
+
+[ext_resource type="Script" uid="uid://dfxf614bfqpyd" path="res://other/mine/mine.gd" id="1_27ach"]
+[ext_resource type="Texture2D" uid="uid://msvlcr5iwu08" path="res://resources/images/figures.png" id="1_i7m07"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7m07"]
+size = Vector2(8, 4)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mbv0r"]
+radius = 25.02
+
+[node name="Mine" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_27ach")
+
+[node name="Base" type="Sprite2D" parent="."]
+texture = ExtResource("1_i7m07")
+region_enabled = true
+region_rect = Rect2(253, 89, 23, 5)
+
+[node name="Point" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
+texture = ExtResource("1_i7m07")
+region_enabled = true
+region_rect = Rect2(260, 80, 9, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_i7m07")
+
+[node name="Explosion" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Explosion"]
+shape = SubResource("CircleShape2D_mbv0r")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_entered" from="Explosion" to="." method="_on_explosion_body_entered"]

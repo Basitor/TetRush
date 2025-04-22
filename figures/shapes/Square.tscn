@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://crxhbnairvsiq"]
+
+[ext_resource type="PackedScene" uid="uid://coxehtwt5q61s" path="res://figures/Figure.tscn" id="1_0aq7i"]
+[ext_resource type="Texture2D" uid="uid://msvlcr5iwu08" path="res://resources/images/figures.png" id="2_08pgx"]
+
+[node name="Square" instance=ExtResource("1_0aq7i")]
+
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource("2_08pgx")
+region_enabled = true
+region_rect = Rect2(10, 120, 60, 60)
+
+[node name="Collision" parent="." index="1"]
+polygon = PackedVector2Array(-30, -30, 30, -30, 30, 30, -30, 30)
+
+[node name="CollisionSmall" parent="." index="4"]
+polygon = PackedVector2Array(-29, -29, 29, -29, 29, 29, -29, 29)

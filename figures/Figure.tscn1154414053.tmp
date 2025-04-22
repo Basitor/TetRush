@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://coxehtwt5q61s"]
+
+[ext_resource type="Script" uid="uid://dh07b77uwx8j0" path="res://figures/figure.gd" id="1_f6os7"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3sfyk"]
+
+[node name="Figure" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 0
+physics_material_override = SubResource("PhysicsMaterial_3sfyk")
+gravity_scale = 0.0
+center_of_mass_mode = 1
+continuous_cd = 1
+contact_monitor = true
+max_contacts_reported = 10
+script = ExtResource("1_f6os7")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+
+[node name="Collision" type="CollisionPolygon2D" parent="."]
+
+[node name="SoundPlayer" type="AudioStreamPlayer2D" parent="."]
+
+[node name="IdleTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_set_idle"]
+[connection signal="timeout" from="IdleTimer" to="." method="_on_idle_timer_timeout"]

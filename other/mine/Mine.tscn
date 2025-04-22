@@ -1,0 +1,94 @@
+[gd_scene load_steps=9 format=3 uid="uid://2fwg6gxohlhi"]
+
+[ext_resource type="Script" uid="uid://dfxf614bfqpyd" path="res://other/mine/mine.gd" id="1_27ach"]
+[ext_resource type="Texture2D" uid="uid://msvlcr5iwu08" path="res://resources/images/figures.png" id="1_i7m07"]
+[ext_resource type="AudioStream" uid="uid://dat5gdummtn3x" path="res://resources/sound/explosion.wav" id="3_iqarb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7m07"]
+size = Vector2(3.5, 5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mbv0r"]
+radius = 55.0
+
+[sub_resource type="Animation" id="Animation_ip3fm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Point:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_iqarb"]
+resource_name = "blink"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Point:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ip3fm"]
+_data = {
+&"RESET": SubResource("Animation_ip3fm"),
+&"blink": SubResource("Animation_iqarb")
+}
+
+[node name="Mine" type="Area2D"]
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("1_27ach")
+
+[node name="Base" type="Sprite2D" parent="."]
+position = Vector2(5, -11)
+rotation = 1.5708
+texture = ExtResource("1_i7m07")
+centered = false
+region_enabled = true
+region_rect = Rect2(253, 89, 23, 5)
+
+[node name="Point" type="Sprite2D" parent="."]
+position = Vector2(7, -4)
+rotation = 1.5708
+texture = ExtResource("1_i7m07")
+centered = false
+region_enabled = true
+region_rect = Rect2(260, 80, 9, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(4.25, 0.5)
+shape = SubResource("RectangleShape2D_i7m07")
+
+[node name="Explosion" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Explosion"]
+position = Vector2(0, 3)
+shape = SubResource("CircleShape2D_mbv0r")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_iqarb")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ip3fm")
+}
+autoplay = "blink"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="finished" from="AudioStreamPlayer2D" to="." method="_on_audio_stream_player_2d_finished"]

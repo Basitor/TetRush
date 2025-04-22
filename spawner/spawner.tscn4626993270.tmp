@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckhycasoe3x4j"]
+
+[ext_resource type="Script" uid="uid://dek0ejhneg1da" path="res://spawner/spawner.gd" id="1_ttk4a"]
+
+[node name="Spawner" type="Marker2D"]
+script = ExtResource("1_ttk4a")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 90)
