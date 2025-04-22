@@ -1,6 +1,45 @@
-[gd_scene load_steps=3 format=3 uid="uid://coxehtwt5q61s"]
+[gd_scene load_steps=7 format=3 uid="uid://coxehtwt5q61s"]
 
 [ext_resource type="Script" uid="uid://dh07b77uwx8j0" path="res://figures/figure.gd" id="1_f6os7"]
+[ext_resource type="Texture2D" uid="uid://bwqnuy753bpnw" path="res://resources/images/solid_figures.png" id="2_jbo4p"]
+
+[sub_resource type="Animation" id="Animation_jbo4p"]
+resource_name = "blink"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(1, 1, 1, 0.501961)]
+}
+
+[sub_resource type="Animation" id="Animation_pk6k2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pk6k2"]
+_data = {
+&"RESET": SubResource("Animation_pk6k2"),
+&"blink": SubResource("Animation_jbo4p")
+}
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f6os7"]
 size = Vector2(5, 5)
@@ -16,13 +55,19 @@ script = ExtResource("1_f6os7")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 
+[node name="SolidSprite" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_jbo4p")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SolidSprite"]
+libraries = {
+&"": SubResource("AnimationLibrary_pk6k2")
+}
+autoplay = "blink"
+
 [node name="Collision" type="CollisionPolygon2D" parent="."]
 
 [node name="SoundPlayer" type="AudioStreamPlayer2D" parent="."]
-
-[node name="IdleTimer" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
 
 [node name="CollisionSmall" type="CollisionPolygon2D" parent="."]
 visible = false
@@ -35,9 +80,6 @@ collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MoveAwayArea"]
 shape = SubResource("RectangleShape2D_f6os7")
-
-[node name="RemoveTimer" type="Timer" parent="."]
-one_shot = true
 
 [node name="Line2D" type="Line2D" parent="."]
 clip_children = 2
@@ -74,7 +116,20 @@ collision_mask = 0
 enabled = false
 collision_mask = 0
 
+[node name="IdleTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="RemoveTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="OverlapArea" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="OverlapArea"]
+
 [connection signal="body_entered" from="." to="." method="_set_idle_tmer"]
-[connection signal="timeout" from="IdleTimer" to="." method="set_idle"]
 [connection signal="area_entered" from="MoveAwayArea" to="." method="_on_move_away_area_entered"]
+[connection signal="timeout" from="IdleTimer" to="." method="set_idle"]
 [connection signal="timeout" from="RemoveTimer" to="." method="remove_figure"]

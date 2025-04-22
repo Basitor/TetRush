@@ -19,16 +19,17 @@ func explode() -> void:
 
 	# apply impulse to figures
 	for other_figure in explosion.get_overlapping_bodies():
-		if other_figure is Figure:
+		if other_figure is Figure and not other_figure.solid_buff:
 			direction = (other_figure.global_position - global_position).normalized()
 			other_figure.apply_impulse(direction * explosion_force, direction)
 
 	# apply impulse to parent
-	if parent_figure.current_state == Figure.FIGURE_STATES.FALL:
-		parent_figure.set_idle()
-	direction = (parent_figure.global_position - global_position).normalized()
-	get_parent().apply_impulse(direction * explosion_force, direction)
-	
+	if not parent_figure.solid_buff:
+		if parent_figure.current_state == Figure.FIGURE_STATES.FALL:
+			parent_figure.set_idle()
+		direction = (parent_figure.global_position - global_position).normalized()
+		get_parent().apply_impulse(direction * explosion_force, direction)
+
 	# TODO detonate other mines (recursion)
 	#for other_mine in explosion.get_overlapping_areas():
 		#if other_mine is Mine and other_mine != self:

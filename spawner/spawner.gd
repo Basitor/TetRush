@@ -2,6 +2,9 @@ extends Marker2D
 
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var blink_red_color: ColorRect = $CanvasLayer/BlinkRedColor
+@onready var move_area: Area2D = $MoveArea
+@onready var collision_shape_2d: CollisionShape2D = $MoveArea/CollisionShape2D
+
 
 const L = preload("res://figures/shapes/L.tscn")
 const LINE = preload("res://figures/shapes/Line.tscn")
@@ -12,10 +15,9 @@ const J = preload("res://figures/shapes/J.tscn")
 const T = preload("res://figures/shapes/T.tscn")
 
 const FIGURES = [L, LINE, L_SMALL, SQUARE, Z, J, T]
-#const FIGURES = [J]
 
 @export var up_distance: float = 75.0
-@export var camera_speed: float = 200.0
+@export var camera_speed: float = 300.0
 @export var camera_shake_intencity: float = 3.0
 @export var camera_shake_time: float = 0.2
 @export var blink_red_intencity: float = 0.5
@@ -62,11 +64,16 @@ func _on_camera_shake() -> void:
 	camera_tween.tween_method(shake_camera, camera_shake_intencity, 1.0, camera_shake_time)
 
 func _figure_done(figure: Figure) -> void:
+	if figure.global_position.y <= global_position.y + collision_shape_2d.shape.get_rect().size.y:
+		move_camera_up()
 	if figure == moving_figure:
 		call_deferred("_let_figure")
 
-func _on_area_2d_body_entered(_body: Node2D) -> void:
+func move_camera_up() -> void:
 	desired_y -= up_distance
+
+func _on_area_2d_body_entered(_body: Node2D) -> void:
+	move_camera_up()
 
 func _on_take_damage() -> void:
 	var blink_tween = get_tree().create_tween()
