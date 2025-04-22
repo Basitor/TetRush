@@ -35,3 +35,11 @@ target_position = Vector2(-10, 0)
 [node name="5" parent="MinePoints" index="4"]
 position = Vector2(2, 45)
 target_position = Vector2(0, 10)
+
+[node name="6" parent="MinePoints" index="5"]
+position = Vector2(15, -45)
+target_position = Vector2(0, -10)
+
+[node name="7" parent="MinePoints" index="6"]
+position = Vector2(-15, 15)
+target_position = Vector2(0, -10)

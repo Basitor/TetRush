@@ -11,8 +11,8 @@ const Z = preload("res://figures/shapes/Z.tscn")
 const J = preload("res://figures/shapes/J.tscn")
 const T = preload("res://figures/shapes/T.tscn")
 
-#const FIGURES = [L, LINE, L_SMALL, SQUARE, Z, J, T]
-const FIGURES = [J]
+const FIGURES = [L, LINE, L_SMALL, SQUARE, Z, J, T]
+#const FIGURES = [J]
 
 @export var up_distance: float = 75.0
 @export var camera_speed: float = 200.0

@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://2fwg6gxohlhi"]
+[gd_scene load_steps=8 format=3 uid="uid://2fwg6gxohlhi"]
 
 [ext_resource type="Script" uid="uid://dfxf614bfqpyd" path="res://other/mine/mine.gd" id="1_27ach"]
 [ext_resource type="Texture2D" uid="uid://msvlcr5iwu08" path="res://resources/images/figures.png" id="1_i7m07"]
-[ext_resource type="AudioStream" uid="uid://dat5gdummtn3x" path="res://resources/sound/explosion.wav" id="3_iqarb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i7m07"]
-size = Vector2(3.5, 5)
+size = Vector2(3.5, 9)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mbv0r"]
 radius = 55.0
@@ -75,14 +74,12 @@ shape = SubResource("RectangleShape2D_i7m07")
 
 [node name="Explosion" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 2
+collision_mask = 10
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Explosion"]
 position = Vector2(0, 3)
 shape = SubResource("CircleShape2D_mbv0r")
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_iqarb")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -90,5 +87,4 @@ libraries = {
 }
 autoplay = "blink"
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="finished" from="AudioStreamPlayer2D" to="." method="_on_audio_stream_player_2d_finished"]
+[connection signal="body_entered" from="." to="." method="_set_exlode"]

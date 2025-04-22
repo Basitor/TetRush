@@ -16,3 +16,31 @@ polygon = PackedVector2Array(-45, -30, 45, -30, 45, 0, 15, 0, 15, 30, -15, 30, -
 
 [node name="CollisionSmall" parent="." index="4"]
 polygon = PackedVector2Array(-44, -29, 44, -29, 44, -1, 14, -1, 14, 29, -14, 29, -14, -1, -44, -1)
+
+[node name="1" parent="MinePoints" index="0"]
+position = Vector2(-32, 0)
+target_position = Vector2(0, 10)
+
+[node name="2" parent="MinePoints" index="1"]
+position = Vector2(29, 0)
+target_position = Vector2(0, 10)
+
+[node name="3" parent="MinePoints" index="2"]
+position = Vector2(-45, -15)
+target_position = Vector2(-10, 0)
+
+[node name="4" parent="MinePoints" index="3"]
+position = Vector2(45, -15)
+target_position = Vector2(10, 0)
+
+[node name="5" parent="MinePoints" index="4"]
+position = Vector2(29, -30)
+target_position = Vector2(0, -10)
+
+[node name="6" parent="MinePoints" index="5"]
+position = Vector2(-32, -30)
+target_position = Vector2(0, -10)
+
+[node name="7" parent="MinePoints" index="6"]
+position = Vector2(0, 30)
+target_position = Vector2(0, 10)

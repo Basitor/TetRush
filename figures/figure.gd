@@ -117,11 +117,11 @@ func _physics_process(delta):
 
 			linear_velocity = vel
 
-func _set_idle(body: Node2D) -> void:
+func _set_idle_tmer(body: Node2D) -> void:
 	if body != self and current_state == FIGURE_STATES.FALL:
 		idle_timer.start()
 
-func _on_idle_timer_timeout() -> void:
+func set_idle() -> void:
 	current_state = FIGURE_STATES.IDLE
 	sound_player.stream = FIGURE_SET_SOUND
 	sound_player.play()

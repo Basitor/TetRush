@@ -25,9 +25,11 @@ wait_time = 0.1
 one_shot = true
 
 [node name="CollisionSmall" type="CollisionPolygon2D" parent="."]
+visible = false
 disabled = true
 
 [node name="MoveAwayArea" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 4
 
@@ -45,21 +47,34 @@ width = 1.0
 [node name="MinePoints" type="Node2D" parent="."]
 
 [node name="1" type="RayCast2D" parent="MinePoints"]
+enabled = false
 collision_mask = 0
 
 [node name="2" type="RayCast2D" parent="MinePoints"]
+enabled = false
 collision_mask = 0
 
 [node name="3" type="RayCast2D" parent="MinePoints"]
+enabled = false
 collision_mask = 0
 
 [node name="4" type="RayCast2D" parent="MinePoints"]
+enabled = false
 collision_mask = 0
 
 [node name="5" type="RayCast2D" parent="MinePoints"]
+enabled = false
 collision_mask = 0
 
-[connection signal="body_entered" from="." to="." method="_set_idle"]
-[connection signal="timeout" from="IdleTimer" to="." method="_on_idle_timer_timeout"]
+[node name="6" type="RayCast2D" parent="MinePoints"]
+enabled = false
+collision_mask = 0
+
+[node name="7" type="RayCast2D" parent="MinePoints"]
+enabled = false
+collision_mask = 0
+
+[connection signal="body_entered" from="." to="." method="_set_idle_tmer"]
+[connection signal="timeout" from="IdleTimer" to="." method="set_idle"]
 [connection signal="area_entered" from="MoveAwayArea" to="." method="_on_move_away_area_entered"]
 [connection signal="timeout" from="RemoveTimer" to="." method="remove_figure"]
