@@ -38,15 +38,15 @@ var target_x: float
 var rotating: bool = false
 var moving_to_side: bool = false
 var move_timer: float = 0
+var mine: Area2D
 
 
 func _ready() -> void:
 	target_rotation = rotation
 	target_x = position.x
-	modulate = Color.from_hsv(randf(), randf_range(0.2, 0.4), randf_range(0.85, 1.0), 0.2)
+	modulate = Color.from_hsv(randf(), randf_range(0.4, 0.6), randf_range(0.85, 1.0), 0.2)
 	line_2d.points = collision_small.polygon
 	overlap_collision_polygon.polygon = collision.polygon
-	
 	choose_buff()
 	
 	if solid_buff:
@@ -71,8 +71,8 @@ func _play_sound(sound: AudioStreamWAV) -> void:
 func _set_state(state) -> void:
 	match state:
 		FIGURE_STATES.SOLID:
-			freeze = true
 			set_collision_layer_value(2, true)
+			freeze = true
 			linear_velocity = Vector2.ZERO
 			solid_animation_player.stop()
 			GlobalEvents.figure_done.emit(self)
@@ -80,6 +80,9 @@ func _set_state(state) -> void:
 		FIGURE_STATES.HANG:
 			freeze = true
 		FIGURE_STATES.FALL:
+			if mine: 
+				mine.set_collision_mask_value(4, true)
+			set_collision_layer_value(4, true)
 			freeze = false
 			target_x = position.x
 			modulate.a = 1
@@ -172,7 +175,6 @@ func _on_move_away_area_entered(_area: Area2D) -> void:
 
 func generate_mine() -> void:
 	var spawn_point: RayCast2D
-	var mine: Area2D
 
 	spawn_point = mine_points.get_children().pick_random()
 	mine = MINE.instantiate()

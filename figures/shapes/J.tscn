@@ -10,7 +10,7 @@ texture = ExtResource("2_kn3db")
 region_enabled = true
 region_rect = Rect2(180, 80, 60, 90)
 
-[node name="Collision" parent="." index="1"]
+[node name="Collision" parent="." index="2"]
 polygon = PackedVector2Array(-30, 45, 30, 45, 30, -45, 0, -45, 0, 15, -30, 15)
 
 [node name="CollisionSmall" parent="." index="4"]

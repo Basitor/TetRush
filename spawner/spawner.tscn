@@ -20,7 +20,6 @@ position = Vector2(0, 100)
 shape = SubResource("RectangleShape2D_khvsl")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="BlinkRedColor" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = 15
@@ -28,6 +27,33 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(1, 0, 0, 0)
 
+[node name="CometSpawn" type="Node2D" parent="."]
+
+[node name="Spawner" type="RayCast2D" parent="CometSpawn"]
+position = Vector2(-870, -175)
+target_position = Vector2(70, 85)
+
+[node name="Spawner2" type="RayCast2D" parent="CometSpawn"]
+position = Vector2(-415, -375)
+target_position = Vector2(25, 100)
+
+[node name="Spawner3" type="RayCast2D" parent="CometSpawn"]
+position = Vector2(395, -395)
+target_position = Vector2(-25, 90)
+
+[node name="Spawner4" type="RayCast2D" parent="CometSpawn"]
+position = Vector2(765, -230)
+target_position = Vector2(-60, 100)
+
+[node name="Spawner5" type="RayCast2D" parent="CometSpawn"]
+position = Vector2(0, -405)
+
+[node name="SpawnComet" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
 [connection signal="body_entered" from="MoveArea" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="SpawnComet" to="." method="generate_comet"]

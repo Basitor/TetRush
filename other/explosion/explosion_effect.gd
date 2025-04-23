@@ -1,0 +1,26 @@
+extends CPUParticles2D
+
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var explosion: Area2D = $Explosion
+@onready var collision_shape_2d: CollisionShape2D = $Explosion/CollisionShape2D
+
+@export var explosion_force: float = 1000
+@export var explosion_radius: float = 55.0
+
+
+func explode() -> void:
+	var impulse_direction: Vector2
+	collision_shape_2d.shape.radius = explosion_radius
+	emitting = true
+	audio_stream_player_2d.play()
+	
+	for figure in explosion.get_overlapping_bodies():
+		if figure is Figure and not figure.solid_buff:
+			if figure.current_state == Figure.FIGURE_STATES.FALL:
+				figure.set_idle()
+			impulse_direction = (figure.global_position - global_position).normalized()
+			figure.apply_impulse(impulse_direction * explosion_force, impulse_direction)
+
+func _on_finished() -> void:
+	pass
+	#queue_free()

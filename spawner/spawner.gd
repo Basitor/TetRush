@@ -1,9 +1,12 @@
 extends Marker2D
 
+const COMET = preload("res://other/comet/Comet.tscn")
+
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var blink_red_color: ColorRect = $CanvasLayer/BlinkRedColor
 @onready var move_area: Area2D = $MoveArea
 @onready var collision_shape_2d: CollisionShape2D = $MoveArea/CollisionShape2D
+@onready var comet_spawn: Node2D = $CometSpawn
 
 
 const L = preload("res://figures/shapes/L.tscn")
@@ -81,3 +84,12 @@ func _on_take_damage() -> void:
 
 func blink_red(intensity: float) -> void:
 	blink_red_color.color.a = intensity
+
+func generate_comet() -> void:
+	var spawn_point: RayCast2D = comet_spawn.get_children().pick_random()
+	var comet: Comet = COMET.instantiate()
+	var random_vector = Vector2(randi_range(-15, 15), randi_range(-15, 15))
+	
+	comet.global_position = spawn_point.global_position
+	comet.linear_velocity = (spawn_point.target_position + random_vector).normalized() * comet.comet_speed
+	get_parent().add_child(comet)

@@ -1,0 +1,94 @@
+[gd_scene load_steps=13 format=3 uid="uid://bgu8apf3kjh6m"]
+
+[ext_resource type="Script" uid="uid://b4mckthcye61c" path="res://other/comet/comet.gd" id="1_o76hm"]
+[ext_resource type="Texture2D" uid="uid://0o0qtute4ybw" path="res://resources/images/comet.png" id="1_xomsy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o76hm"]
+atlas = ExtResource("1_xomsy")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7xtcg"]
+atlas = ExtResource("1_xomsy")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fumv5"]
+atlas = ExtResource("1_xomsy")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1tgxj"]
+atlas = ExtResource("1_xomsy")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kjx4i"]
+atlas = ExtResource("1_xomsy")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrtnq"]
+atlas = ExtResource("1_xomsy")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mkq00"]
+atlas = ExtResource("1_xomsy")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_akn1u"]
+atlas = ExtResource("1_xomsy")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y40lc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o76hm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xtcg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fumv5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1tgxj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kjx4i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mrtnq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mkq00")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_akn1u")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xomsy"]
+radius = 3.16228
+
+[node name="Comet" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 3
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("1_o76hm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-4, 0)
+rotation = -0.785398
+sprite_frames = SubResource("SpriteFrames_y40lc")
+autoplay = "default"
+frame_progress = 0.252593
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xomsy")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_set_exlode"]
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
