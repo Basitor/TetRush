@@ -45,6 +45,7 @@ _data = {
 size = Vector2(5, 5)
 
 [node name="Figure" type="RigidBody2D"]
+modulate = Color(1, 1, 1, 0.2)
 collision_layer = 0
 collision_mask = 3
 mass = 5.0
@@ -56,11 +57,16 @@ script = ExtResource("1_f6os7")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 
-[node name="SolidSprite" type="Sprite2D" parent="."]
+[node name="Line2D" type="Line2D" parent="Sprite"]
+clip_children = 2
+closed = true
+width = 2.0
+
+[node name="SolidSprite" type="Sprite2D" parent="Sprite"]
 visible = false
 texture = ExtResource("2_jbo4p")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="SolidSprite"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite/SolidSprite"]
 libraries = {
 &"": SubResource("AnimationLibrary_pk6k2")
 }
@@ -81,11 +87,6 @@ collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MoveAwayArea"]
 shape = SubResource("RectangleShape2D_f6os7")
-
-[node name="Line2D" type="Line2D" parent="."]
-clip_children = 2
-closed = true
-width = 2.0
 
 [node name="MinePoints" type="Node2D" parent="."]
 
@@ -116,6 +117,16 @@ collision_mask = 0
 [node name="7" type="RayCast2D" parent="MinePoints"]
 enabled = false
 collision_mask = 0
+
+[node name="LazerPoints" type="Node2D" parent="."]
+
+[node name="1" type="Marker2D" parent="LazerPoints"]
+
+[node name="2" type="Marker2D" parent="LazerPoints"]
+
+[node name="3" type="Marker2D" parent="LazerPoints"]
+
+[node name="4" type="Marker2D" parent="LazerPoints"]
 
 [node name="IdleTimer" type="Timer" parent="."]
 wait_time = 0.1

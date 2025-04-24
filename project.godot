@@ -70,6 +70,7 @@ apply={
 2d_physics/layer_4="falling_figure"
 2d_physics/layer_5="overlap"
 2d_physics/layer_6="explosion"
+2d_physics/layer_7="comet"
 
 [rendering]
 

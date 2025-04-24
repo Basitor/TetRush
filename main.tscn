@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://b1d2wuc275dtj" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://ckhycasoe3x4j" path="res://spawner/spawner.tscn" id="2_0xm2m"]
 [ext_resource type="Shader" uid="uid://loes1bnmnufb" path="res://shaders/bg.gdshader" id="2_h2yge"]
-[ext_resource type="AudioStream" uid="uid://d2eejq7m1t6ry" path="res://resources/sound/background.wav" id="4_1bvp3"]
 [ext_resource type="LabelSettings" uid="uid://buxdjyoo5gjjm" path="res://resources/labels/new_label_settings.tres" id="4_7mycd"]
 [ext_resource type="Texture2D" uid="uid://cf8xjtfvdy0ml" path="res://resources/images/cosmic_platform.png" id="6_7mycd"]
+[ext_resource type="AudioStream" uid="uid://s3uwtga5n126" path="res://resources/sound/background2.wav" id="6_272bh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1bvp3"]
 shader = ExtResource("2_h2yge")
@@ -116,10 +116,10 @@ size_flags_vertical = 8
 mouse_filter = 2
 
 [node name="Spawner" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(638, 362)
+position = Vector2(640, 180)
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_1bvp3")
+stream = ExtResource("6_272bh")
 
 [node name="FigureFelt" type="Area2D" parent="."]
 collision_layer = 4

@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://2fwg6gxohlhi"]
+[gd_scene load_steps=9 format=3 uid="uid://2fwg6gxohlhi"]
 
 [ext_resource type="Script" uid="uid://dfxf614bfqpyd" path="res://other/mine/mine.gd" id="1_27ach"]
 [ext_resource type="Texture2D" uid="uid://msvlcr5iwu08" path="res://resources/images/figures.png" id="1_i7m07"]
+[ext_resource type="Shader" uid="uid://bu3tia8q31ihk" path="res://shaders/mine_glow.gdshader" id="3_iqarb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i7m07"]
 size = Vector2(3.5, 9)
@@ -44,6 +45,13 @@ _data = {
 &"blink": SubResource("Animation_iqarb")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ip3fm"]
+shader = ExtResource("3_iqarb")
+shader_parameter/time = 0.0
+shader_parameter/vignette_color = Color(1, 0, 0, 1)
+shader_parameter/wave_width = 0.1
+shader_parameter/speed = 2.0
+
 [node name="Mine" type="Area2D"]
 collision_layer = 0
 collision_mask = 3
@@ -74,5 +82,12 @@ libraries = {
 &"": SubResource("AnimationLibrary_ip3fm")
 }
 autoplay = "blink"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_ip3fm")
+offset_left = -1.0
+offset_top = -5.0
+offset_right = 10.0
+offset_bottom = 6.0
 
 [connection signal="body_entered" from="." to="." method="_set_explode"]

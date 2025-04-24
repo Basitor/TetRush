@@ -4,8 +4,8 @@ const COMET = preload("res://other/comet/Comet.tscn")
 
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var blink_red_color: ColorRect = $CanvasLayer/BlinkRedColor
-@onready var move_area: Area2D = $MoveArea
-@onready var collision_shape_2d: CollisionShape2D = $MoveArea/CollisionShape2D
+@onready var move_up_area: Area2D = $MoveUpArea
+@onready var move_down_area: Area2D = $MoveDownArea
 @onready var comet_spawn: Node2D = $CometSpawn
 
 
@@ -19,8 +19,8 @@ const T = preload("res://figures/shapes/T.tscn")
 
 const FIGURES = [L, LINE, L_SMALL, SQUARE, Z, J, T]
 
-@export var up_distance: float = 75.0
-@export var camera_speed: float = 300.0
+@export var move_distance: float = 60.0
+@export_range(0.1, 0.9) var camera_speed: float = 0.2
 @export var camera_shake_intencity: float = 3.0
 @export var camera_shake_time: float = 0.2
 @export var blink_red_intencity: float = 0.5
@@ -41,9 +41,11 @@ func _ready() -> void:
 	GlobalEvents.take_damage.connect(_on_take_damage)
 	camera_shake_noise = FastNoiseLite.new()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if global_position.y != desired_y:
-		global_position.y = move_toward(global_position.y, desired_y, camera_speed * delta)
+		global_position.y = lerp(global_position.y, desired_y, camera_speed)
+		if abs(desired_y - global_position.y) < 15.0:
+			desired_y = global_position.y
 
 func _gen_figure() -> void:
 	var figure = FIGURES.pick_random()
@@ -67,16 +69,15 @@ func _on_camera_shake() -> void:
 	camera_tween.tween_method(shake_camera, camera_shake_intencity, 1.0, camera_shake_time)
 
 func _figure_done(figure: Figure) -> void:
-	if figure.global_position.y <= global_position.y + collision_shape_2d.shape.get_rect().size.y:
-		move_camera_up()
+	if move_up_area.get_overlapping_bodies():
+		move_camera(-move_distance)
+	if not move_down_area.get_overlapping_bodies():
+		move_camera(+move_distance)
 	if figure == moving_figure:
 		call_deferred("_let_figure")
 
-func move_camera_up() -> void:
-	desired_y -= up_distance
-
-func _on_area_2d_body_entered(_body: Node2D) -> void:
-	move_camera_up()
+func move_camera(distance: float) -> void:
+	desired_y += distance
 
 func _on_take_damage() -> void:
 	var blink_tween = get_tree().create_tween()

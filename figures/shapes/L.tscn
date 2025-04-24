@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://msvlcr5iwu08" path="res://resources/images/figures.png" id="2_62wyo"]
 
 [node name="L" instance=ExtResource("1_t7f3i")]
+mine_chance = 1.0
+lazer_chance = 1.0
 
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource("2_62wyo")
@@ -13,7 +15,7 @@ region_rect = Rect2(110, 80, 60, 90)
 [node name="Collision" parent="." index="1"]
 polygon = PackedVector2Array(-30, -45, 0, -45, 0, 15, 30, 15, 30, 45, -30, 45)
 
-[node name="CollisionSmall" parent="." index="4"]
+[node name="CollisionSmall" parent="." index="3"]
 polygon = PackedVector2Array(-29, -44, -1, -44, -1, 16, 29, 16, 29, 44, -29, 44)
 
 [node name="1" parent="MinePoints" index="0"]
@@ -43,3 +45,15 @@ target_position = Vector2(0, 10)
 [node name="7" parent="MinePoints" index="6"]
 position = Vector2(13, 15)
 target_position = Vector2(0, -10)
+
+[node name="1" parent="LazerPoints" index="0"]
+position = Vector2(-15, -30)
+
+[node name="2" parent="LazerPoints" index="1"]
+position = Vector2(-15, 0)
+
+[node name="3" parent="LazerPoints" index="2"]
+position = Vector2(-15, 30)
+
+[node name="4" parent="LazerPoints" index="3"]
+position = Vector2(15, 30)

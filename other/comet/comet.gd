@@ -15,13 +15,16 @@ func _physics_process(_delta: float) -> void:
 	if linear_velocity.length() > 0.1:
 		rotation = linear_velocity.angle()
 
-func _set_exlode(_body: Node2D) -> void:
+func explode() -> void:
 	effect = EXPLOSION_EFFECT.instantiate()
 	effect.explosion_radius = explosion_radius
 	effect.explosion_force = explosion_force
 	effect.global_position = global_position
 	get_parent().call_deferred("add_child", effect)
 	queue_free()
+
+func _set_exlode(_body: Node2D) -> void:
+	explode()
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	queue_free()

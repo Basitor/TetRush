@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://b6bd27caikdjh"]
+
+[ext_resource type="Script" uid="uid://cyophsga2gqm2" path="res://other/lazer/lazer.gd" id="1_dbuv6"]
+[ext_resource type="Texture2D" uid="uid://cpwn04elel3h7" path="res://resources/images/lazer_tower.png" id="2_gg5rp"]
+[ext_resource type="Texture2D" uid="uid://ct6o8v22n8aq6" path="res://resources/images/lazer_tower_gun.png" id="2_wtiie"]
+
+[sub_resource type="Curve" id="Curve_dbuv6"]
+_limits = [0.5, 7.0, 0.0, 1.0]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 7), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="Lazer" type="Area2D"]
+collision_layer = 0
+collision_mask = 64
+script = ExtResource("1_dbuv6")
+scan_rotation_speed = 10.0
+
+[node name="BaseSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_gg5rp")
+
+[node name="LazerLine" type="Line2D" parent="."]
+width = 2.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="ScanCollision" type="CollisionPolygon2D" parent="."]
+visible = false
+polygon = PackedVector2Array(0, -8, 0, 8, 187, 18, 187, -18)
+disabled = true
+
+[node name="ScanLine" type="Line2D" parent="ScanCollision"]
+points = PackedVector2Array(0, 0, 186, 0)
+width = 5.0
+width_curve = SubResource("Curve_dbuv6")
+default_color = Color(0, 0.737255, 0.462745, 0.580392)
+
+[node name="LazerGun" type="Sprite2D" parent="."]
+texture = ExtResource("2_wtiie")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
