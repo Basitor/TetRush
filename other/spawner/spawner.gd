@@ -30,7 +30,7 @@ var active_figure: Figure
 var moving_figure: Figure
 var desired_y: float
 var camera_shake_noise: FastNoiseLite
-
+var moving: bool = false
 
 func _ready() -> void:
 	call_deferred("_gen_figure")
@@ -41,11 +41,19 @@ func _ready() -> void:
 	GlobalEvents.take_damage.connect(_on_take_damage)
 	camera_shake_noise = FastNoiseLite.new()
 
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
+	if not moving:
+		if move_up_area.get_overlapping_bodies() :
+			move_camera(-move_distance)
+		if not move_down_area.get_overlapping_bodies():
+			move_camera(+move_distance)
+
 	if global_position.y != desired_y:
+		moving = true
 		global_position.y = lerp(global_position.y, desired_y, camera_speed)
 		if abs(desired_y - global_position.y) < 15.0:
 			desired_y = global_position.y
+			moving = false
 
 func _gen_figure() -> void:
 	var figure = FIGURES.pick_random()
@@ -69,10 +77,6 @@ func _on_camera_shake() -> void:
 	camera_tween.tween_method(shake_camera, camera_shake_intencity, 1.0, camera_shake_time)
 
 func _figure_done(figure: Figure) -> void:
-	if move_up_area.get_overlapping_bodies():
-		move_camera(-move_distance)
-	if not move_down_area.get_overlapping_bodies():
-		move_camera(+move_distance)
 	if figure == moving_figure:
 		call_deferred("_let_figure")
 

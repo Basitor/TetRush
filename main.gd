@@ -1,6 +1,7 @@
 extends Node2D
 
 @export var MAX_HEALTH: int = 3
+@export var MUSIC_ON: bool = true
 
 @onready var spawner: Marker2D = $Spawner
 @onready var collision_polygon_2d: CollisionPolygon2D = $MainBase/CollisionPolygon2D
@@ -18,6 +19,9 @@ var figures_num: int = 0
 
 func _ready() -> void:
 	health_num_label.text = str(MAX_HEALTH)
+	if MUSIC_ON:
+		mute_button.text = "Music: On"
+		background_music.play()
 	GlobalEvents.new_figure.connect(_on_spawner_new_figure)
 	GlobalEvents.take_damage.connect(take_damage)
 

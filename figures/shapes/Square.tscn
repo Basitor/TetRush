@@ -10,10 +10,10 @@ texture = ExtResource("2_08pgx")
 region_enabled = true
 region_rect = Rect2(10, 120, 60, 60)
 
-[node name="Collision" parent="." index="2"]
+[node name="Collision" parent="." index="1"]
 polygon = PackedVector2Array(-30, -30, 30, -30, 30, 30, -30, 30)
 
-[node name="CollisionSmall" parent="." index="4"]
+[node name="CollisionSmall" parent="." index="3"]
 polygon = PackedVector2Array(-29, -29, 29, -29, 29, 29, -29, 29)
 
 [node name="1" parent="MinePoints" index="0"]

@@ -51,6 +51,8 @@ collision_mask = 3
 mass = 5.0
 gravity_scale = 0.0
 center_of_mass_mode = 1
+freeze_mode = 1
+continuous_cd = 2
 contact_monitor = true
 max_contacts_reported = 10
 script = ExtResource("1_f6os7")
@@ -77,11 +79,9 @@ autoplay = "blink"
 [node name="SoundPlayer" type="AudioStreamPlayer2D" parent="."]
 
 [node name="CollisionSmall" type="CollisionPolygon2D" parent="."]
-visible = false
 disabled = true
 
 [node name="MoveAwayArea" type="Area2D" parent="."]
-visible = false
 collision_layer = 0
 collision_mask = 4
 

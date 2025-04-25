@@ -11,7 +11,7 @@ void fragment() {
     float radius = mod(time * speed, 1.5);
 
     float edge = smoothstep(radius - wave_width, radius, dist) * (1.0 - smoothstep(radius, radius + wave_width, dist));
-   
+
 	vec4 wave_color = vignette_color;
     wave_color.a *= edge;
 

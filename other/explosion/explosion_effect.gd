@@ -2,10 +2,13 @@ extends CPUParticles2D
 
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var explosion: Area2D = $Explosion
-@onready var collision_shape_2d: CollisionShape2D = $Explosion/CollisionShape2D
+@onready var explosion_collision: CollisionShape2D = $Explosion/Collision
 
 @export var explosion_force: float = 1000
 @export var explosion_radius: float = 55.0
+
+func _ready() -> void:
+	explosion_collision.shape.radius = explosion_radius
 
 func explode() -> void:
 	var impulse_direction: Vector2

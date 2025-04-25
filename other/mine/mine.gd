@@ -1,6 +1,6 @@
 class_name Mine extends Area2D
 
-@export var explosion_force: float = 1200.0
+@export var explosion_force: float = 1400.0
 @export var explosion_radius: float = 55.0
 
 const EXPLOSION_EFFECT = preload("res://other/explosion/ExplosionEffect.tscn")

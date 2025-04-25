@@ -6,7 +6,7 @@ const MARK_TARGET = preload("res://resources/images/target.png")
 @onready var scan_collision: CollisionPolygon2D = $ScanCollision
 @onready var lazer_gun: Sprite2D = $LazerGun
 
-@export var scan_rotation_speed: float = 50.0
+@export var scan_rotation_speed: float = 30.0
 @export var lazer_speed: float = 1500.0
 
 var comets: Array
