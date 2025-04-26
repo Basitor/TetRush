@@ -1,191 +1,69 @@
-[gd_scene load_steps=9 format=3 uid="uid://c5q7dq3dpcxdt"]
+[gd_scene load_steps=5 format=3 uid="uid://dr2k2qrl8uvgl"]
 
-[ext_resource type="Script" uid="uid://b1d2wuc275dtj" path="res://main.gd" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://ckhycasoe3x4j" path="res://other/spawner/spawner.tscn" id="2_0xm2m"]
-[ext_resource type="Shader" uid="uid://loes1bnmnufb" path="res://shaders/bg.gdshader" id="2_h2yge"]
-[ext_resource type="LabelSettings" uid="uid://buxdjyoo5gjjm" path="res://resources/labels/new_label_settings.tres" id="4_7mycd"]
-[ext_resource type="Texture2D" uid="uid://cf8xjtfvdy0ml" path="res://resources/images/cosmic_platform.png" id="6_7mycd"]
-[ext_resource type="AudioStream" uid="uid://s3uwtga5n126" path="res://resources/sound/background2.wav" id="6_272bh"]
+[ext_resource type="PackedScene" uid="uid://dogjk1bnyd4mj" path="res://settings/Settings.tscn" id="1_glv2v"]
+[ext_resource type="Script" uid="uid://gyhksvdstfry" path="res://main.gd" id="1_uu6xs"]
+[ext_resource type="Shader" uid="uid://dqkxjnbm25vag" path="res://shaders/old_effect.gdshader" id="2_r0du0"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1bvp3"]
-shader = ExtResource("2_h2yge")
-shader_parameter/color_top = Color(0.056, 0.084, 0.14, 1)
-shader_parameter/color_bottom = Color(0.3528, 0.36204, 0.63, 1)
-shader_parameter/vignette_strength = 0.1
-shader_parameter/vignette_width = 0.4
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lquwl"]
-size = Vector2(6161, 87)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cm0pq"]
+shader = ExtResource("2_r0du0")
+shader_parameter/scanline_intensity = 0.01
 
 [node name="Main" type="Node2D"]
-script = ExtResource("1_0xm2m")
-MAX_HEALTH = 3100
+script = ExtResource("1_uu6xs")
 
-[node name="MainBase" type="StaticBody2D" parent="."]
-collision_mask = 0
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 100
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MainBase"]
-position = Vector2(622, 460)
-polygon = PackedVector2Array(-242, 305, -242, 355, -215, 382, 244, 382, 270, 356, 270, 305)
-
-[node name="Sprite2D" type="Sprite2D" parent="MainBase"]
-position = Vector2(380, 765)
-texture = ExtResource("6_7mycd")
-centered = false
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-
-[node name="VBoxContainer" type="VBoxContainer" parent="ParallaxBackground"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -86.0
-offset_bottom = 101.0
-grow_horizontal = 0
-
-[node name="RestartButton" type="Button" parent="ParallaxBackground/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-text = "Restart"
-
-[node name="MuteButton" type="Button" parent="ParallaxBackground/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-text = "Music: Off"
-
-[node name="BackgroundStars" type="Button" parent="ParallaxBackground/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-text = "Stars: On"
-
-[node name="FiguresNum" type="VBoxContainer" parent="ParallaxBackground"]
-offset_right = 143.0
-offset_bottom = 94.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="ParallaxBackground/FiguresNum"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="ParallaxBackground/FiguresNum/HBoxContainer"]
-layout_mode = 2
-text = "Figures:"
-label_settings = ExtResource("4_7mycd")
-
-[node name="NumLabel" type="Label" parent="ParallaxBackground/FiguresNum/HBoxContainer"]
-layout_mode = 2
-text = "0"
-label_settings = ExtResource("4_7mycd")
-
-[node name="Health" type="HBoxContainer" parent="ParallaxBackground/FiguresNum"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="ParallaxBackground/FiguresNum/Health"]
-layout_mode = 2
-text = "Health:"
-label_settings = ExtResource("4_7mycd")
-
-[node name="NumLabel" type="Label" parent="ParallaxBackground/FiguresNum/Health"]
-layout_mode = 2
-text = "0"
-label_settings = ExtResource("4_7mycd")
-
-[node name="FallingStars" type="CPUParticles2D" parent="ParallaxBackground"]
-position = Vector2(-2, 6)
-amount = 30
-lifetime = 10.0
-emission_shape = 3
-emission_rect_extents = Vector2(1, 720)
-direction = Vector2(2, 1)
-spread = 0.0
-gravity = Vector2(0, 0)
-initial_velocity_min = 100.0
-initial_velocity_max = 200.0
-angular_velocity_min = 50.0
-angular_velocity_max = 150.0
-scale_amount_max = 3.0
-color = Color(0.64, 0.64, 0.64, 0.756863)
-
-[node name="ColorRect" type="ColorRect" parent="ParallaxBackground"]
-z_index = -100
-material = SubResource("ShaderMaterial_1bvp3")
+[node name="OldEffect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_cm0pq")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
 mouse_filter = 2
-color = Color(1, 1, 1, 0)
 
-[node name="Spawner" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(640, 250)
-
-[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6_272bh")
-
-[node name="FigureFelt" type="Area2D" parent="."]
-collision_layer = 4
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FigureFelt"]
-position = Vector2(630, 887)
-shape = SubResource("RectangleShape2D_lquwl")
-
-[node name="GameOver" type="CanvasLayer" parent="."]
-process_mode = 2
-visible = false
-
-[node name="Control" type="Control" parent="GameOver"]
+[node name="Menu" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="ColorRect" type="ColorRect" parent="GameOver/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Menu"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0, 0, 0, 0.497)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="GameOver"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -32.5
+offset_left = -20.0
 offset_top = -20.0
-offset_right = 32.5
+offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GameOver/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="GameOver/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "Game Over! Your score is: "
-label_settings = ExtResource("4_7mycd")
-
-[node name="ScoreNum" type="Label" parent="GameOver/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "0"
-label_settings = ExtResource("4_7mycd")
-
-[node name="Button" type="Button" parent="GameOver/VBoxContainer"]
+[node name="Start normal" type="Button" parent="CanvasLayer/Menu/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "Restart
-"
+text = "Start Normal"
 
-[connection signal="pressed" from="ParallaxBackground/VBoxContainer/RestartButton" to="." method="_restart_button_pressed"]
-[connection signal="pressed" from="ParallaxBackground/VBoxContainer/MuteButton" to="." method="_mute_button_pressed"]
-[connection signal="pressed" from="ParallaxBackground/VBoxContainer/BackgroundStars" to="." method="_on_background_stars_pressed"]
-[connection signal="pressed" from="GameOver/VBoxContainer/Button" to="." method="_restart_button_pressed"]
+[node name="Start zen" type="Button" parent="CanvasLayer/Menu/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Start Zen mode"
+
+[node name="ShowSettings" type="Button" parent="CanvasLayer/Menu/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Settings"
+
+[node name="Settings" parent="CanvasLayer" instance=ExtResource("1_glv2v")]
+
+[connection signal="pressed" from="CanvasLayer/Menu/VBoxContainer/Start normal" to="." method="_on_start_normal_pressed"]
+[connection signal="pressed" from="CanvasLayer/Menu/VBoxContainer/Start zen" to="." method="_on_start_zen_pressed"]
+[connection signal="pressed" from="CanvasLayer/Menu/VBoxContainer/ShowSettings" to="." method="_on_settings_pressed"]

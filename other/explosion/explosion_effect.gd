@@ -15,9 +15,10 @@ func explode() -> void:
 
 	emitting = true
 	
-	audio_stream_player_2d.pitch_scale = randf_range(0.8, 1.2)
-	audio_stream_player_2d.play()
-	
+	if GlobalEvents.effects:
+		audio_stream_player_2d.pitch_scale = randf_range(0.8, 1.2)
+		audio_stream_player_2d.play()
+
 	for figure in explosion.get_overlapping_bodies():
 		if figure is Figure and not figure.solid_buff:
 			if figure.current_state == Figure.FIGURE_STATES.FALL:

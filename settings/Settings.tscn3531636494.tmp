@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://dogjk1bnyd4mj"]
+
+[ext_resource type="Script" uid="uid://clltox28ofhvn" path="res://settings/settings.gd" id="1_fy3oa"]
+[ext_resource type="LabelSettings" uid="uid://buxdjyoo5gjjm" path="res://resources/labels/new_label_settings.tres" id="2_2qmqm"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+script = ExtResource("1_fy3oa")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -78.5
+offset_top = -57.5
+offset_right = 78.5
+offset_bottom = 57.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SettingsLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+label_settings = ExtResource("2_2qmqm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSplitContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Container2" type="VBoxContainer" parent="VBoxContainer/HSplitContainer"]
+layout_mode = 2
+
+[node name="Music" type="Label" parent="VBoxContainer/HSplitContainer/Container2"]
+layout_mode = 2
+text = "Enable music"
+
+[node name="Effects" type="Label" parent="VBoxContainer/HSplitContainer/Container2"]
+layout_mode = 2
+text = "Enable effects"
+
+[node name="OldTV" type="Label" parent="VBoxContainer/HSplitContainer/Container2"]
+layout_mode = 2
+text = "Old TV effect"
+
+[node name="Container" type="VBoxContainer" parent="VBoxContainer/HSplitContainer"]
+layout_mode = 2
+
+[node name="Music" type="CheckButton" parent="VBoxContainer/HSplitContainer/Container"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="Effects" type="CheckButton" parent="VBoxContainer/HSplitContainer/Container"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="OldTV" type="CheckButton" parent="VBoxContainer/HSplitContainer/Container"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="BackButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Back"
+
+[connection signal="toggled" from="VBoxContainer/HSplitContainer/Container/Music" to="." method="_on_music_toggled"]
+[connection signal="toggled" from="VBoxContainer/HSplitContainer/Container/Effects" to="." method="_on_effects_toggled"]
+[connection signal="toggled" from="VBoxContainer/HSplitContainer/Container/OldTV" to="." method="_on_old_tv_toggled"]
+[connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://b6bd27caikdjh"]
+[gd_scene load_steps=7 format=3 uid="uid://b6bd27caikdjh"]
 
 [ext_resource type="Script" uid="uid://cyophsga2gqm2" path="res://other/lazer/lazer.gd" id="1_dbuv6"]
 [ext_resource type="Texture2D" uid="uid://cpwn04elel3h7" path="res://resources/images/lazer_tower.png" id="2_gg5rp"]
 [ext_resource type="Texture2D" uid="uid://ct6o8v22n8aq6" path="res://resources/images/lazer_tower_gun.png" id="2_wtiie"]
+[ext_resource type="AudioStream" uid="uid://cw74pt0c3706w" path="res://resources/sound/lazer.wav" id="4_44325"]
 
 [sub_resource type="Curve" id="Curve_dbuv6"]
 _limits = [0.5, 7.0, 0.0, 1.0]
@@ -10,7 +11,7 @@ _data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 7), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_wtiie"]
-colors = PackedColorArray(0, 0, 0, 0, 0, 0.78, 0.013, 0.541176)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0.780392, 0.0117647, 0.364706)
 
 [node name="Lazer" type="Area2D"]
 collision_layer = 0
@@ -38,5 +39,8 @@ gradient = SubResource("Gradient_wtiie")
 
 [node name="LazerGun" type="Sprite2D" parent="."]
 texture = ExtResource("2_wtiie")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_44325")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

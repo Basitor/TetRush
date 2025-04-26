@@ -5,6 +5,7 @@ const MARK_TARGET = preload("res://resources/images/target.png")
 @onready var lazer_line: Line2D = $LazerLine
 @onready var scan_collision: CollisionPolygon2D = $ScanCollision
 @onready var lazer_gun: Sprite2D = $LazerGun
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 @export var scan_rotation_speed: float = 30.0
 @export var lazer_speed: float = 1500.0
@@ -40,6 +41,8 @@ func _physics_process(delta: float) -> void:
 
 	if comets:
 		current_comet = comets.pop_front()
+		if GlobalEvents.effects:
+			audio_stream_player_2d.play()
 
 func _on_body_entered(comet: Comet) -> void:
 	var mark_comet: Sprite2D

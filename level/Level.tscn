@@ -1,0 +1,208 @@
+[gd_scene load_steps=11 format=3 uid="uid://c5q7dq3dpcxdt"]
+
+[ext_resource type="Script" uid="uid://b1d2wuc275dtj" path="res://level/level.gd" id="1_m3clv"]
+[ext_resource type="Texture2D" uid="uid://cf8xjtfvdy0ml" path="res://resources/images/cosmic_platform.png" id="2_mxnmf"]
+[ext_resource type="LabelSettings" uid="uid://buxdjyoo5gjjm" path="res://resources/labels/new_label_settings.tres" id="3_4eo0i"]
+[ext_resource type="Shader" uid="uid://loes1bnmnufb" path="res://shaders/bg.gdshader" id="4_86ljf"]
+[ext_resource type="PackedScene" uid="uid://ckhycasoe3x4j" path="res://other/spawner/spawner.tscn" id="5_3ywx5"]
+[ext_resource type="AudioStream" uid="uid://s3uwtga5n126" path="res://resources/sound/background2.wav" id="6_ofirr"]
+
+[sub_resource type="Gradient" id="Gradient_w3hki"]
+offsets = PackedFloat32Array(0, 0.533333, 1)
+colors = PackedColorArray(0.140128, 0.518494, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1bvp3"]
+shader = ExtResource("4_86ljf")
+shader_parameter/color_top = Color(0.056, 0.084, 0.14, 1)
+shader_parameter/color_bottom = Color(0.3528, 0.36204, 0.63, 1)
+shader_parameter/vignette_strength = 0.1
+shader_parameter/vignette_width = 0.4
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lquwl"]
+size = Vector2(8920, 136.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w3hki"]
+size = Vector2(510, 35)
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_m3clv")
+
+[node name="MainBase" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MainBase"]
+position = Vector2(622, 460)
+polygon = PackedVector2Array(-242, 305, -242, 355, -215, 382, 244, 382, 270, 356, 270, 305)
+
+[node name="Sprite2D" type="Sprite2D" parent="MainBase"]
+position = Vector2(380, 765)
+texture = ExtResource("2_mxnmf")
+centered = false
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="FiguresNum" type="VBoxContainer" parent="ParallaxBackground"]
+offset_right = 143.0
+offset_bottom = 94.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ParallaxBackground/FiguresNum"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ParallaxBackground/FiguresNum/HBoxContainer"]
+layout_mode = 2
+text = "Figures:"
+label_settings = ExtResource("3_4eo0i")
+
+[node name="NumLabel" type="Label" parent="ParallaxBackground/FiguresNum/HBoxContainer"]
+layout_mode = 2
+text = "0"
+label_settings = ExtResource("3_4eo0i")
+
+[node name="Health" type="HBoxContainer" parent="ParallaxBackground/FiguresNum"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ParallaxBackground/FiguresNum/Health"]
+layout_mode = 2
+text = "Health:"
+label_settings = ExtResource("3_4eo0i")
+
+[node name="NumLabel" type="Label" parent="ParallaxBackground/FiguresNum/Health"]
+layout_mode = 2
+text = "0"
+label_settings = ExtResource("3_4eo0i")
+
+[node name="FallingStars" type="CPUParticles2D" parent="ParallaxBackground"]
+position = Vector2(-2, 6)
+amount = 30
+lifetime = 20.0
+emission_shape = 3
+emission_rect_extents = Vector2(1, 720)
+direction = Vector2(2, 1)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 70.0
+initial_velocity_max = 150.0
+angular_velocity_min = 50.0
+angular_velocity_max = 150.0
+scale_amount_max = 3.0
+color = Color(0.639216, 0.639216, 0.639216, 0.811765)
+color_initial_ramp = SubResource("Gradient_w3hki")
+
+[node name="ColorRect" type="ColorRect" parent="ParallaxBackground"]
+z_index = -100
+material = SubResource("ShaderMaterial_1bvp3")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="BlinkRedColor" type="ColorRect" parent="ParallaxBackground"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 0)
+
+[node name="SettingsButton" type="Button" parent="ParallaxBackground"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -70.0
+offset_bottom = 31.0
+grow_horizontal = 0
+focus_mode = 0
+text = "Settings"
+
+[node name="Spawner" parent="." instance=ExtResource("5_3ywx5")]
+position = Vector2(640, 250)
+
+[node name="FigureFelt" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FigureFelt"]
+position = Vector2(625, 911.75)
+shape = SubResource("RectangleShape2D_lquwl")
+
+[node name="GameOver" type="CanvasLayer" parent="."]
+process_mode = 2
+visible = false
+
+[node name="Control" type="Control" parent="GameOver"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="GameOver/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.497)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOver"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.5
+offset_top = -20.0
+offset_right = 32.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameOver/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GameOver/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Game Over! Your score is: "
+label_settings = ExtResource("3_4eo0i")
+
+[node name="ScoreNum" type="Label" parent="GameOver/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "0"
+label_settings = ExtResource("3_4eo0i")
+
+[node name="RestartButton" type="Button" parent="GameOver/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Restart
+"
+
+[node name="MainMenu" type="Button" parent="GameOver/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Main menu
+"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_ofirr")
+
+[node name="BaseArea" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseArea"]
+position = Vector2(635, 782.5)
+shape = SubResource("RectangleShape2D_w3hki")
+
+[connection signal="pressed" from="ParallaxBackground/SettingsButton" to="." method="_on_button_pressed"]
+[connection signal="area_entered" from="FigureFelt" to="." method="_on_figure_felt_area_entered"]
+[connection signal="pressed" from="GameOver/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="GameOver/VBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]

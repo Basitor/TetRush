@@ -1,17 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://ckhycasoe3x4j"]
+[gd_scene load_steps=4 format=3 uid="uid://ckhycasoe3x4j"]
 
 [ext_resource type="Script" uid="uid://dek0ejhneg1da" path="res://other/spawner/spawner.gd" id="1_ttk4a"]
-[ext_resource type="Shader" uid="uid://dqkxjnbm25vag" path="res://shaders/old_effect.gdshader" id="2_b0h12"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_khvsl"]
 size = Vector2(1280, 320)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nhote"]
-size = Vector2(1280, 520)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pcocn"]
-shader = ExtResource("2_b0h12")
-shader_parameter/scanline_intensity = 0.01
+size = Vector2(1280, 560)
 
 [node name="Spawner" type="Marker2D"]
 script = ExtResource("1_ttk4a")
@@ -21,7 +16,7 @@ position = Vector2(0, 320)
 
 [node name="MoveUpArea" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 2
+collision_mask = 128
 
 [node name="MoveUpCollision" type="CollisionShape2D" parent="MoveUpArea"]
 position = Vector2(0, 160)
@@ -29,51 +24,31 @@ shape = SubResource("RectangleShape2D_khvsl")
 
 [node name="MoveDownArea" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 3
+collision_mask = 128
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MoveDownArea"]
-position = Vector2(0, 260)
+position = Vector2(0, 280)
 shape = SubResource("RectangleShape2D_nhote")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="BlinkRedColor" type="ColorRect" parent="CanvasLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0, 0, 0)
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-material = SubResource("ShaderMaterial_pcocn")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="CometSpawn" type="Node2D" parent="."]
 
 [node name="Spawner" type="RayCast2D" parent="CometSpawn"]
-position = Vector2(-870, -175)
-target_position = Vector2(70, 85)
+position = Vector2(-755, -70)
+target_position = Vector2(85, 80)
 
 [node name="Spawner2" type="RayCast2D" parent="CometSpawn"]
-position = Vector2(-415, -375)
+position = Vector2(-350, -215)
 target_position = Vector2(25, 100)
 
 [node name="Spawner3" type="RayCast2D" parent="CometSpawn"]
-position = Vector2(395, -395)
+position = Vector2(290, -205)
 target_position = Vector2(-25, 90)
 
 [node name="Spawner4" type="RayCast2D" parent="CometSpawn"]
-position = Vector2(765, -230)
+position = Vector2(735, -100)
 target_position = Vector2(-60, 100)
 
-[node name="SpawnComet" type="Timer" parent="."]
+[node name="SpawnCometTimer" type="Timer" parent="."]
 wait_time = 1.5
-autostart = true
 
-[connection signal="timeout" from="SpawnComet" to="." method="generate_comet"]
+[connection signal="timeout" from="SpawnCometTimer" to="." method="generate_comet"]

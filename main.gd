@@ -1,58 +1,38 @@
 extends Node2D
 
-@export var MAX_HEALTH: int = 3
-@export var MUSIC_ON: bool = true
+const LEVEL = preload("res://level/Level.tscn")
 
-@onready var spawner: Marker2D = $Spawner
-@onready var collision_polygon_2d: CollisionPolygon2D = $MainBase/CollisionPolygon2D
-@onready var figure_num_label: Label = $ParallaxBackground/FiguresNum/HBoxContainer/NumLabel
-@onready var health_num_label: Label = $ParallaxBackground/FiguresNum/Health/NumLabel
-@onready var background_music: AudioStreamPlayer = $BackgroundMusic
-@onready var mute_button: Button = $ParallaxBackground/VBoxContainer/MuteButton
-@onready var game_over: CanvasLayer = $GameOver
-@onready var score_num: Label = $GameOver/VBoxContainer/HBoxContainer/ScoreNum
-@onready var background_stars_button: Button = $ParallaxBackground/VBoxContainer/BackgroundStars
-@onready var falling_stars: CPUParticles2D = $ParallaxBackground/FallingStars
+@onready var settings: Settings = $CanvasLayer/Settings
+@onready var menu: Control = $CanvasLayer/Menu
+@onready var old_effect: ColorRect = $CanvasLayer/OldEffect
 
-@onready var health_num: int = MAX_HEALTH
-var figures_num: int = 0
+var level: Level
 
 func _ready() -> void:
-	health_num_label.text = str(MAX_HEALTH)
-	if MUSIC_ON:
-		mute_button.text = "Music: On"
-		background_music.play()
-	GlobalEvents.new_figure.connect(_on_spawner_new_figure)
-	GlobalEvents.take_damage.connect(take_damage)
+	GlobalEvents.show_main_menu.connect(func(on: bool): menu.visible = on)
+	GlobalEvents.end_game.connect(func():
+		GlobalEvents.game_on = false
+		if level: level.queue_free()
+	)
+	GlobalEvents.change_old_tv.connect(func(on: bool): old_effect.visible = on)
+	GlobalEvents.restart_level.connect(_generate_level)
 
-func take_damage() -> void:
-	health_num = int(health_num_label.text) - 1
-	health_num_label.text = str(health_num)
-	if health_num <= 0:
-		score_num.text = str(figures_num)
-		get_tree().paused = true
-		game_over.show()
-
-func _on_spawner_new_figure() -> void:
-	figures_num += 1
-	figure_num_label.text = str(figures_num)
-
-func _restart_button_pressed() -> void:
+func _on_settings_pressed() -> void:
+	GlobalEvents.show_settings.emit(true)
+	GlobalEvents.show_main_menu.emit(false)
+	
+func _generate_level() -> void:
 	get_tree().paused = false
-	get_tree().reload_current_scene()
+	GlobalEvents.show_main_menu.emit(false)
+	GlobalEvents.show_settings.emit(false)
+	GlobalEvents.game_on = true
+	level = LEVEL.instantiate()
+	add_child(level)
 
-func _mute_button_pressed() -> void:
-	if background_music.playing:
-		mute_button.text = "Music: Off"
-		background_music.stop()
-	else:
-		mute_button.text = "Music: On"
-		background_music.play()
+func _on_start_normal_pressed() -> void:
+	GlobalEvents.zen_mode = false
+	_generate_level()
 
-func _on_background_stars_pressed() -> void:
-	if falling_stars.emitting:
-		background_stars_button.text = "Stars: Off"
-		falling_stars.emitting = false
-	else:
-		background_stars_button.text = "Stars: On"
-		falling_stars.emitting = true
+func _on_start_zen_pressed() -> void:
+	GlobalEvents.zen_mode = true
+	_generate_level()

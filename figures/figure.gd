@@ -20,19 +20,21 @@ const LAZER = preload("res://other/lazer/Lazer.tscn")
 @onready var lazer_points: Node2D = $LazerPoints
 @onready var overlap_area: Area2D = $OverlapArea
 @onready var overlap_collision_polygon: CollisionPolygon2D = $OverlapArea/CollisionPolygon2D
+@onready var move_away_area: Area2D = $MoveAwayArea
+
 # timers
 @onready var idle_timer: Timer = $IdleTimer
 @onready var remove_timer: Timer = $RemoveTimer
 
 @export_category("Buffs")
-@export_range(0.0, 1.0) var mine_chance = 0.1
-@export_range(0.0, 1.0) var lazer_chance = 0.1
+@export_range(0.0, 1.0) var mine_chance = 0.15
+@export_range(0.0, 1.0) var lazer_chance = 0.05
 @export_range(0.0, 1.0) var solid_chance = 0.1
 
 @export_category("Other")
 @export var side_step: float = 10.0
-@export var side_move_speed: float = 700.0
-@export var fall_speed: float = 50.0
+@export var side_move_speed: float = 900.0
+@export var fall_speed: float = 70.0
 @export var fast_fall_multiplier: int = 3
 @export var rotate_speed: float = 30.0
 @export var move_cooldown: float = 0.08
@@ -56,10 +58,11 @@ func _ready() -> void:
 	sprite.modulate = Color.from_hsv(randf(), randf_range(0.4, 0.6), randf_range(0.85, 1.0), 0.8)
 	line_2d.points = collision_small.polygon
 	overlap_collision_polygon.polygon = collision.polygon
-	generate_lazer()
-	generate_mine()
+	if not GlobalEvents.zen_mode:
+		generate_lazer()
+		generate_mine()
 	generate_solid()
-	
+
 	if solid_buff:
 		solid_sprite.region_enabled = true
 		solid_sprite.region_rect = sprite.region_rect
@@ -67,6 +70,7 @@ func _ready() -> void:
 		solid_animation_player.play("blink")
 
 func _play_sound(sound: AudioStreamWAV) -> void:
+	if not GlobalEvents.effects: return
 	sound_player.pitch_scale = randf_range(0.8, 1.2)
 	sound_player.stream = sound
 	sound_player.play()
@@ -74,12 +78,8 @@ func _play_sound(sound: AudioStreamWAV) -> void:
 func _set_state(state) -> void:
 	match state:
 		FIGURE_STATES.SOLID:
-			set_collision_layer_value(2, true)
-			freeze = true
-			linear_velocity = Vector2.ZERO
-			solid_animation_player.stop()
-			sound_player.stream = FIGURE_SET_SOLID
-			sound_player.play()
+			convert_to_static()
+			_play_sound(FIGURE_SET_SOLID)
 			GlobalEvents.figure_done.emit(self)
 			GlobalEvents.camera_shake.emit()
 		FIGURE_STATES.HANG:
@@ -95,9 +95,9 @@ func _set_state(state) -> void:
 			modulate.a = 1
 		FIGURE_STATES.IDLE:
 			set_collision_layer_value(2, true)
+			move_away_area.set_collision_layer_value(8, true)
 			gravity_scale = 1
-			sound_player.stream = FIGURE_SET_SOUND
-			sound_player.play()
+			_play_sound(FIGURE_SET_SOUND)
 			GlobalEvents.figure_done.emit(self)
 			GlobalEvents.camera_shake.emit()
 	current_state = state
@@ -175,10 +175,25 @@ func set_idle() -> void:
 	else:
 		current_state = FIGURE_STATES.IDLE
 
-func _on_move_away_area_entered(_area: Area2D) -> void:
-	GlobalEvents.figure_done.emit(self)
-	GlobalEvents.take_damage.emit()
-	remove_timer.start()
+func convert_to_static():
+	var static_figure = StaticBody2D.new()
+	
+	solid_animation_player.stop()
+
+	move_away_area.set_collision_layer_value(8, true)
+	static_figure.set_collision_layer_value(2, true)
+	static_figure.set_collision_layer_value(1, false)
+	static_figure.global_position = global_position
+	static_figure.global_rotation = global_rotation
+
+	collision.reparent(static_figure)
+	sprite.reparent(static_figure)
+	move_away_area.reparent(static_figure)
+	if mine: mine.reparent(static_figure)
+	if lazer: lazer.reparent(static_figure)
+
+	get_parent().add_child(static_figure)
+	queue_free()
 
 func generate_mine() -> void:
 	var spawn_point: RayCast2D
